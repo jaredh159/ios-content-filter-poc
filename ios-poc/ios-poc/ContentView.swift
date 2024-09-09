@@ -1,11 +1,10 @@
-import SwiftUI
 import FamilyControls
 import NetworkExtension
-
+import SwiftUI
 
 struct ContentView: View {
   @State private var authorized: Bool? = nil
-  
+
   var body: some View {
     VStack {
       if authorized == nil {
@@ -35,7 +34,6 @@ struct ContentView_Previews: PreviewProvider {
   }
 }
 
-
 func requestAuthorization() async -> Bool {
   let center = AuthorizationCenter.shared
   do {
@@ -47,7 +45,13 @@ func requestAuthorization() async -> Bool {
 }
 
 func saveConfiguration() async throws {
-  try await NEFilterManager.shared().removeFromPreferences()
+  let foo = try await NEFilterManager.shared().loadFromPreferences()
+  do {
+    try await NEFilterManager.shared().removeFromPreferences()
+  } catch {
+    dump(error)
+    print("err is \(error)")
+  }
   if NEFilterManager.shared().providerConfiguration == nil {
     let newConfiguration = NEFilterProviderConfiguration()
     newConfiguration.filterBrowsers = true
@@ -64,4 +68,3 @@ func saveConfiguration() async throws {
     }
   }
 }
-
