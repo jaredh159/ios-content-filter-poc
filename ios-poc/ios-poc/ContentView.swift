@@ -1,28 +1,31 @@
 import SwiftUI
-import Foundation
-
 import FamilyControls
 import NetworkExtension
 
 
-
 struct ContentView: View {
+  @State private var authorized: Bool? = nil
+  
   var body: some View {
     VStack {
-      Button("request auth") {
-        // todo:
-        print("do it")
-        Task {
-         try? await reqAuth()
+      if authorized == nil {
+        ProgressView()
+      } else if authorized == false {
+        Button("Request auth") {
+          print("requesting authorization...")
+          Task { self.authorized = await requestAuthorization() }
         }
-      }
-      Button("install filter") {
-        // todo:
-        print("but how?")
-        activateExt()
+      } else {
+        Button("Try save filter config") {
+          print("Saving configuration...")
+          Task { try await saveConfiguration() }
+        }
       }
     }
     .padding()
+    .task {
+      self.authorized = await requestAuthorization()
+    }
   }
 }
 
@@ -33,38 +36,32 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 
-//@MainActor
-func reqAuth() async throws {
+func requestAuthorization() async -> Bool {
   let center = AuthorizationCenter.shared
-  
-  // this might be ios16 only, possibly use request.authorization (comphandler)
-  // see https://developer.apple.com/documentation/technotes/tn3134-network-extension-provider-deployment#Deploying-a-content-filter-provider
-  try await center.requestAuthorization(for: .individual)
+  do {
+    try await center.requestAuthorization(for: .individual)
+    return true
+  } catch {
+    return false
+  }
 }
 
-func activateExt() {
+func saveConfiguration() async throws {
+  try await NEFilterManager.shared().removeFromPreferences()
   if NEFilterManager.shared().providerConfiguration == nil {
     let newConfiguration = NEFilterProviderConfiguration()
-    newConfiguration.username = "UserName"
-    newConfiguration.organization = "ContentFilterDemoApp "
     newConfiguration.filterBrowsers = true
-    newConfiguration.filterSockets = true
-    newConfiguration.serverAddress = "http://192.168.100.48:3000" //url of server from where rules will be fetched
     NEFilterManager.shared().providerConfiguration = newConfiguration
   }
-  NEFilterManager.shared().isEnabled = true //self.statusCell.isOn
+  NEFilterManager.shared().isEnabled = true
   NEFilterManager.shared().saveToPreferences { error in
-    if let  saveError = error {
-      print("Failed to save the filter configuration: \(saveError)")
+    if let error {
+      dump(error)
+      // 3 is stale?
+      print("Failed to save the filter configuration: \(error)")
+    } else {
+      print("Saved filter config successfully")
     }
   }
-//  let manager = NEFilterManager.shared()
-//  let activationRequest = OSSystemExtensionRequest.activationRequest(
-//    forExtensionWithIdentifier: FILTER_EXT_BUNDLE_ID,
-//    queue: .main
-//  )
-//  activationRequest.delegate = delegate
-//  OSSystemExtensionManager.shared.submitRequest(activationRequest)
-//
 }
 
