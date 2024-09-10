@@ -45,7 +45,7 @@ func requestAuthorization() async -> Bool {
 }
 
 func saveConfiguration() async throws {
-  let foo = try await NEFilterManager.shared().loadFromPreferences()
+  _ = try? await NEFilterManager.shared().loadFromPreferences()
   do {
     try await NEFilterManager.shared().removeFromPreferences()
   } catch {
@@ -54,7 +54,10 @@ func saveConfiguration() async throws {
   }
   if NEFilterManager.shared().providerConfiguration == nil {
     let newConfiguration = NEFilterProviderConfiguration()
+    newConfiguration.username = "IOSPoc"
+    newConfiguration.organization = "Gertrude"
     newConfiguration.filterBrowsers = true
+    newConfiguration.filterSockets = true
     NEFilterManager.shared().providerConfiguration = newConfiguration
   }
   NEFilterManager.shared().isEnabled = true
