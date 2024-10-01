@@ -36,12 +36,20 @@ struct ContentView_Previews: PreviewProvider {
 
 func requestAuthorization() async -> Bool {
   let center = AuthorizationCenter.shared
-  do {
-    try await center.requestAuthorization(for: .individual)
+//  do {
+//    try await center.requestAuthorization(for: .child)
+  // giving me a FamilyControlsError.invalidAccountType
+  // https://developer.apple.com/documentation/familycontrols/familycontrolserror
+  // https://developer.apple.com/documentation/technotes/tn3134-network-extension-provider-deployment
+  // legacy requestAuthorization(completionHandler:) ALWAYS requests child auth
+  // accordingto TN3134
+    center.requestAuthorization { result in
+      print(result)
+    }
     return true
-  } catch {
-    return false
-  }
+//  } catch {
+//    return false
+//  }
 }
 
 func saveConfiguration() async throws {

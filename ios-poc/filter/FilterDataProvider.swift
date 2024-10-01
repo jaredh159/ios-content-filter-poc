@@ -26,6 +26,10 @@ class FilterDataProvider: NEFilterDataProvider {
         return .drop()
       }
     }
+    if let src = flow.sourceAppIdentifier, src.contains("HashtagImagesExtension") {
+      os_log("[G•] DROP #IMAGES")
+      return .drop()
+    }
     return .allow()
   }
 }
