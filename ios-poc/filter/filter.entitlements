@@ -8,7 +8,7 @@
   </array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.gertrude-skunk.ios-poc</string>
+		<string>group.com.netrivet.gertrude-ios.app</string>
 	</array>
 </dict>
 </plist>
