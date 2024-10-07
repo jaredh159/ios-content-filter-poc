@@ -1,17 +1,15 @@
-//
-//  ios_pocApp.swift
-//  ios-poc
-//
-//  Created by jared on 10/26/23.
-//
-
+import App
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct ios_pocApp: App {
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView(store: Store(initialState: .init()) {
+        AppReducer()
+      }
+      )
     }
   }
 }

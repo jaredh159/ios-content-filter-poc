@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		7FA7B85B2AEB243400363B53 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA7B85A2AEB243400363B53 /* NetworkExtension.framework */; };
 		7FA7B85E2AEB243400363B53 /* FilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7B85D2AEB243400363B53 /* FilterDataProvider.swift */; };
 		7FA7B8632AEB243400363B53 /* filter.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7FA7B8582AEB243400363B53 /* filter.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7FD028E82CB4320B00F2763F /* App in Frameworks */ = {isa = PBXBuildFile; productRef = 7FD028E72CB4320B00F2763F /* App */; };
 		7FE743D32C8F431500607876 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA7B85A2AEB243400363B53 /* NetworkExtension.framework */; };
 		7FE743D62C8F431500607876 /* FilterControlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE743D52C8F431500607876 /* FilterControlProvider.swift */; };
 		7FE743DB2C8F431500607876 /* controller.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7FE743D22C8F431500607876 /* controller.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -75,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FD028E82CB4320B00F2763F /* App in Frameworks */,
 				7FE743DF2C8F4ED700607876 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,6 +188,9 @@
 				7FE743DA2C8F431500607876 /* PBXTargetDependency */,
 			);
 			name = "ios-poc";
+			packageProductDependencies = (
+				7FD028E72CB4320B00F2763F /* App */,
+			);
 			productName = "ios-poc";
 			productReference = 7FA7B8432AEB238700363B53 /* ios-poc.app */;
 			productType = "com.apple.product-type.application";
@@ -254,6 +259,9 @@
 				Base,
 			);
 			mainGroup = 7FA7B83A2AEB238700363B53;
+			packageReferences = (
+				7FD028E62CB4320B00F2763F /* XCLocalSwiftPackageReference "../lib-ios" */,
+			);
 			productRefGroup = 7FA7B8442AEB238700363B53 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -466,6 +474,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,6 +507,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -666,6 +676,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7FD028E62CB4320B00F2763F /* XCLocalSwiftPackageReference "../lib-ios" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../lib-ios";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7FD028E72CB4320B00F2763F /* App */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = App;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7FA7B83B2AEB238700363B53 /* Project object */;
 }
