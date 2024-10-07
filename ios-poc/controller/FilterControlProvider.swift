@@ -22,14 +22,16 @@ class FilterControlProvider: NEFilterControlProvider {
     _ flow: NEFilterFlow,
     completionHandler: @escaping (NEFilterControlVerdict) -> Void
   ) {
-    // Add code to determine if the flow should be dropped or not, downloading new rules if required
-    os_log("[G•] handle new flow (control) : %{public}s", String(describing: flow))
-    if let url = flow.url {
-      os_log("[G•] handle new URL (control) : %{public}s", url.absoluteString)
-      if url.absoluteString.hasPrefix("https://www.apple.com") {
-        completionHandler(.drop(withUpdateRules: false))
-      }
-    }
+    // called when control class says `.needRules()`
     completionHandler(.allow(withUpdateRules: false))
   }
 }
+
+//os_log("[G•] handle new flow (control) : %{public}s", String(describing: flow))
+//if let browserFlow = flow as? NEFilterBrowserFlow {
+//  os_log("[G•] handle new BROWSER flow (control) : %{public}s", String(describing: browserFlow))
+//} else if let socketFlow = flow as? NEFilterSocketFlow {
+//  os_log("[G•] handle new SOCKET flow (control) : %{public}s", String(describing: socketFlow))
+//} else {
+//  os_log("[G•] flow is NEITHER subclass (unreachable?) id: %{public}s", String(describing: flow.identifier))
+//}

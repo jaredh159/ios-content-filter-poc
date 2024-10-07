@@ -7,3 +7,4 @@ ios-poc/.xcodeproj/*.xcuserstate
 ios-poc/ios-poc.xcodeproj/project.xcworkspace/xcuserdata
 build/
 DerivedData/
+.DS_Store
