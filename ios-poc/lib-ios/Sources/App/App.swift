@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import FamilyControls
 import NetworkExtension
+import os.log
 
 @Reducer public struct AppReducer {
   @ObservableState
@@ -24,18 +25,34 @@ import NetworkExtension
   }
 
   public enum Action: Equatable {
+    case appLaunched
     case authorizeTapped
     case authorizationFailed(AuthFailureReason)
     case authorizationSucceeded
     case authorizationFailedTryAgainTapped
     case installFailed(FilterInstallError)
+    case installFailedTryAgainTapped
     case installSucceeded
     case installFilterTapped
+    case setRunning(Bool)
   }
 
   public var body: some Reducer<State, Action> {
     Reduce { state, action in
       switch action {
+
+      case .appLaunched:
+        return .run { send in
+          await send(.setRunning(await isRunning()))
+        }
+
+      case .setRunning(true):
+        state.appState = .running
+        return .none
+
+      case .setRunning(false):
+        state.appState = .unauthorized
+        return .none
 
       case .authorizeTapped:
         guard state.appState == .unauthorized else {
@@ -77,6 +94,10 @@ import NetworkExtension
         state.appState = .installFailed(error)
         return .none
 
+      case .installFailedTryAgainTapped:
+        // remove all the things...
+        return .none
+
       case .installSucceeded:
         state.appState = .running
         return .none
@@ -92,7 +113,11 @@ func requestAuthorization() async -> Result<Void, AuthFailureReason> {
   // TODO: figure out SPM things...
   #if os(iOS)
     do {
-      try await AuthorizationCenter.shared.requestAuthorization(for: .child)
+      #if DEBUG
+        try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+      #else
+        try await AuthorizationCenter.shared.requestAuthorization(for: .child)
+      #endif
     } catch let familyError as FamilyControlsError {
       switch familyError {
       case .invalidAccountType:
@@ -199,7 +224,13 @@ func saveConfiguration() async -> Result<Void, FilterInstallError> {
   }
 }
 
-func checkConfiguration() async {
-  // below might be how we can figure out on launch if we're already installed
-  // let error = try? await NEFilterManager.shared().loadFromPreferences()
+func isRunning() async -> Bool {
+  do {
+    try await NEFilterManager.shared().loadFromPreferences()
+    return NEFilterManager.shared().isEnabled
+  } catch {
+    print("Error loading preferences: \(error)")
+    os_log("[G•] error loading preferences (isRunning()): %{public}s", String(reflecting: error))
+    return false
+  }
 }

@@ -8,8 +8,7 @@ struct ios_pocApp: App {
     WindowGroup {
       ContentView(store: Store(initialState: .init()) {
         AppReducer()
-      }
-      )
+      })
     }
   }
 }

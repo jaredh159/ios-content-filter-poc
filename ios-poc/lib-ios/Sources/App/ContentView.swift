@@ -16,7 +16,9 @@ public struct ContentView: View {
       case .authorized:
         VStack(spacing: 20) {
           Text("Authorization granted! One more step: install the content filter.")
-          Button("Install Filter") {}
+          Button("Install Filter") {
+            self.store.send(.installFilterTapped)
+          }
         }
       case .authorizationFailed(let reason):
         VStack(spacing: 20) {
@@ -53,9 +55,31 @@ public struct ContentView: View {
       case .installFailed(let error):
         VStack(spacing: 20) {
           Text("Sorry, the installation failed")
-          Text(String(reflecting: error))
+          Group {
+            switch error {
+            case .configurationInvalid:
+              Text("Configuration is invalid.")
+            case .configurationDisabled:
+              Text("Configuration is disabled.")
+            case .configurationStale:
+              Text("Configuration is stale.")
+            case .configurationCannotBeRemoved:
+              Text("Configuration can not be removed.")
+            case .configurationPermissionDenied:
+              Text("Permission denied.")
+            case .configurationInternalError:
+              Text("Internal error.")
+            case .unexpected(let underlying):
+              Text("Unexpected error: \(underlying)")
+            }
+          }.font(.footnote)
+          Button("Try again") {
+            self.store.send(.installFailedTryAgainTapped)
+          }
         }
-      default:
+      case .running:
+        Text("Gertrude is running")
+      case .unauthorized:
         VStack(spacing: 15) {
           Text("Welcome to Gertrude!")
             .font(.title)
@@ -67,5 +91,8 @@ public struct ContentView: View {
       }
     }
     .padding()
+    .onAppear {
+      self.store.send(.appLaunched)
+    }
   }
 }

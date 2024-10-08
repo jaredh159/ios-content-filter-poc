@@ -4,12 +4,10 @@ import PackageDescription
 
 let package = Package(
   name: "App",
-  platforms: [.macOS(.v12), .iOS(.v17)],
+  platforms: [.macOS(.v13), .iOS(.v17)],
   products: [
-    .library(
-      name: "App",
-      targets: ["App"]
-    ),
+    .library(name: "App", targets: ["App"]),
+    .library(name: "Filter", targets: ["Filter"]),
   ],
   dependencies: [
     .package(
@@ -24,9 +22,17 @@ let package = Package(
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       ]
     ),
+    .target(
+      name: "Filter",
+      dependencies: []
+    ),
     .testTarget(
       name: "AppTests",
       dependencies: ["App"]
+    ),
+    .testTarget(
+      name: "FilterTests",
+      dependencies: ["Filter"]
     ),
   ]
 )

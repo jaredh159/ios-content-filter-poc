@@ -5,6 +5,9 @@ ios-poc/.xcodeproj/xcuserdata/
 ios-poc/.xcodeproj/xcuserdata/
 ios-poc/.xcodeproj/*.xcuserstate
 ios-poc/ios-poc.xcodeproj/project.xcworkspace/xcuserdata
+ios-poc/ios-poc.xcodeproj/project.xcworkspace/xcuserdata
+ios-poc/ios-poc/lib-ios/.swiftpm
+ios-poc/ios-poc/lib-ios/.build
 build/
 DerivedData/
 .DS_Store
