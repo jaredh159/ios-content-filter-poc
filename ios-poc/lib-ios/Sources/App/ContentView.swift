@@ -11,8 +11,10 @@ public struct ContentView: View {
   public var body: some View {
     VStack {
       switch self.store.appState {
-      case .unknown, .authorizing:
-        ProgressView()
+      case .unknown:
+        EmptyView()
+      case .authorizing:
+        LoadingScreen()
       case .authorized:
         VStack(spacing: 20) {
           Text("Authorization granted! One more step: install the content filter.")
