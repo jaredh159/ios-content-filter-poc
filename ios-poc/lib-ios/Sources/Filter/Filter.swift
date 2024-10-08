@@ -12,8 +12,6 @@ public func decideFlow(hostname: String?, url: String?, sourceId: String?) -> Bo
   if let target = url ?? hostname {
     if target.contains("cdn2.smoot.apple.com") {
       return false
-      // } else if target.contains("media.tenor.co") {
-      //   return false
     } else if target.contains("tenor.co") {
       return false
     } else if target.contains("giphy.com") {
